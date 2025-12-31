@@ -1,12 +1,27 @@
-import { getAuthorBySlug, getPostsByAuthor } from "@/app/lib/data";
+import { getAuthorBySlug, getPostsByAuthor, authors } from "@/app/lib/data";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+
+export async function generateStaticParams() {
+  return authors.map((author) => ({
+    slug: author.slug,
+  }));
+}
 
 export default function AuthorPage({ params }: { params: { slug: string } }) {
   const author = getAuthorBySlug(params.slug);
   
   if (!author) {
-    return <div>Author not found</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Author not found</h1>
+          <Link href="/blog" className="text-blue-600 hover:underline">
+            Back to Blog
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const posts = getPostsByAuthor(author.id);

@@ -1,6 +1,12 @@
-import { getPostBySlug, getAuthorBySlug, authors } from "@/app/lib/data";
+import { getPostBySlug, getAuthorBySlug, authors, blogPosts } from "@/app/lib/data";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+
+export async function generateStaticParams() {
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export default function BlogPost({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
